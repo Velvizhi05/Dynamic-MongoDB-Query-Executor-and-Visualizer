@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic MongoDB Query Executor and Visualizer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <style>
+        /* Loading Spinner Style */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3; /* Light gray */
+            border-top: 4px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+
+        /* Keyframes for rotating the spinner */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Dynamic MongoDB Query Executor and Visualizer</h1>
+
+        <!-- Loading Spinner Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner"></div>
+        </div>
+
+        <form method="POST" action="/" id="queryForm">
+            <div class="form-group">
+                <label for="question">Enter your question or prompt:</label>
+                <input type="text" class="form-control" id="question" name="question" value="{{ request.form.get('question') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="plot_type">Select Plot Type:</label>
+                <select class="form-control" id="plot_type" name="plot_type" required>
+                    <option {% if session.get('plot_type') == 'Bar Chart' %}selected{% endif %}>Bar Chart</option>
+                    <option {% if session.get('plot_type') == 'Line Chart' %}selected{% endif %}>Line Chart</option>
+                    <option {% if session.get('plot_type') == 'Scatter Plot' %}selected{% endif %}>Scatter Plot</option>
+                    <option {% if session.get('plot_type') == 'Histogram' %}selected{% endif %}>Histogram</option>
+                    <option {% if session.get('plot_type') == 'Pie Chart' %}selected{% endif %}>Pie Chart</option>
+                    <option {% if session.get('plot_type') == 'Area Chart' %}selected{% endif %}>Area Chart</option>
+                    <option {% if session.get('plot_type') == 'Box Plot' %}selected{% endif %}>Box Plot</option>
+                    <option {% if session.get('plot_type') == 'Bubble Chart' %}selected{% endif %}>Bubble Chart</option>
+                    <option {% if session.get('plot_type') == 'Heatmap' %}selected{% endif %}>Heatmap</option>
+                    <option {% if session.get('plot_type') == 'Violin Plot' %}selected{% endif %}>Violin Plot</option>
+                    <option {% if session.get('plot_type') == 'Treemap' %}selected{% endif %}>Treemap</option>
+                    <option {% if session.get('plot_type') == 'Funnel Chart' %}selected{% endif %}>Funnel Chart</option>
+                    <option {% if session.get('plot_type') == 'Radar Chart' %}selected{% endif %}>Radar Chart</option>
+                    <option {% if session.get('plot_type') == 'Sunburst Chart' %}selected{% endif %}>Sunburst Chart</option>
+                    <option {% if session.get('plot_type') == 'Density Plot' %}selected{% endif %}>Density Plot</option>
+                    <option {% if session.get('plot_type') == '3D Scatter Plot' %}selected{% endif %}>3D Scatter Plot</option>
+                    <option {% if session.get('plot_type') == '3D Surface Plot' %}selected{% endif %}>3D Surface Plot</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="x_axis">Select X-Axis:</label>
+                <input type="text" class="form-control" id="x_axis" name="x_axis" value="{{ request.form.get('x_axis') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="y_axis">Select Y-Axis:</label>
+                <input type="text" class="form-control" id="y_axis" name="y_axis" value="{{ request.form.get('y_axis') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="z_axis">Select Z-Axis (for 3D plots):</label>
+                <input type="text" class="form-control" id="z_axis" name="z_axis">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+        <br>
+        {% if plot_html %}
+            <h2>Generated Plot</h2>
+            <div>{{ plot_html | safe }}</div>
+        {% endif %}
+
+        {% if df %}
+            <h2>Data Preview</h2>
+            <div>{{ df | safe }}</div>
+        {% endif %}
+
+        {% if message %}
+            <p class="text-danger">{{ message }}</p>
+        {% endif %}
+    </div>
+
+    <script>
+        // Show the loading overlay when the form is submitted
+        document.getElementById('queryForm').addEventListener('submit', function() {
+            document.getElementById('loadingOverlay').style.display = 'flex'; // Show the overlay
+        });
+
+        // Hide the loading overlay when the page has finished loading
+        window.addEventListener('load', function() {
+            document.getElementById('loadingOverlay').style.display = 'none'; // Hide the overlay
+        });
+    </script>
+</body>
+</html>
