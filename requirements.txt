@@ -1,0 +1,7 @@
+Python 3.x  
+- Flask  
+- MongoDB (local or Atlas)  
+- Valid **Cohere API key and openai api key
+- Plotly                       
+- Pandas                       
+- HTML, CSS, Bootstrap         
