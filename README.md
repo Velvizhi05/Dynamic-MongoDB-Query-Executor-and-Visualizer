@@ -2,6 +2,17 @@
 This project is an intelligent platform that allows users to dynamically interact with a MongoDB database using natural language queries, execute them in real-time, and visualize the results in an intuitive format. The system is enhanced by powerful AI models — OpenAI’s GPT-4o-Mini and cohere.
 
 
+## 📸 Screenshots
+
+### 🔎 Natural Language Query Interface
+![Query UI](![Screenshot 2025-01-17 183553](https://github.com/user-attachments/assets/e60a3c59-f625-4a45-ae9e-18e67476b58b)
+)
+
+### 📊 Plotly Visualization Output
+![Plot Output](![Screenshot 2025-01-17 183632](https://github.com/user-attachments/assets/dac0041d-780e-49f5-8c43-5f0d3603e192)
+)
+
+
 # 🎯 MongoDB Query and Plot Generator
 
 A smart web-based tool that transforms **natural language queries** into **MongoDB commands** and visualizes the data using **interactive plots**. Designed to assist both technical and non-technical users in exploring databases without writing code manually.
