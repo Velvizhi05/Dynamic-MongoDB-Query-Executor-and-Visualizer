@@ -8,7 +8,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 # Set up Cohere API key
-os.environ["COHERE_API_KEY"] = "pyGvYghVtkc18NVUeJ7LxcT0ouBD5idWE6Dsk767"
+os.environ["COHERE_API_KEY"] = "Your api key"
 cohere_client = cohere.Client(os.environ["COHERE_API_KEY"])
 
 # MongoDB connection
