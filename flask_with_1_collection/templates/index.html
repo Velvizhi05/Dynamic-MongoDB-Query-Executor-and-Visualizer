@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Plot Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Loader Style */
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Loader container to center it */
+        .loader-container {
+            display: none;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .loader-container.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Dynamic Plot Generator</h1>
+        <form method="POST" class="mt-4" id="plotForm">
+            <!-- User Input for Query -->
+            <div class="mb-3">
+                <label for="question" class="form-label">Enter Your Query:</label>
+                <textarea id="question" name="question" class="form-control" rows="2" placeholder="Ask a question about the data..."></textarea>
+            </div>
+
+            <!-- Dropdown for Plot Type -->
+            <div class="mb-3">
+                <label for="plot_type" class="form-label">Select Plot Type:</label>
+                <select id="plot_type" name="plot_type" class="form-select">
+                    <option value="1D">1D (Data Only)</option>
+                    <option value="Bar Chart">Bar Chart</option>
+                    <option value="Line Chart">Line Chart</option>
+                    <option value="Scatter Plot">Scatter Plot</option>
+                    <option value="Pie Chart">Pie Chart</option>
+                    <option value="Histogram">Histogram</option>
+                    <option value="Area Chart">Area Chart</option>
+                    <option value="Box Plot">Box Plot</option>
+                    <option value="Bubble Chart">Bubble Chart</option>
+                    <option value="Heatmap">Heatmap</option>
+                    <option value="Violin Plot">Violin Plot</option>
+                    <option value="Treemap">Treemap</option>
+                    <option value="Funnel Chart">Funnel Chart</option>
+                    <option value="Radar Chart">Radar Chart</option>
+                    <option value="Sunburst Chart">Sunburst Chart</option>
+                    <option value="Density Plot">Density Plot</option>
+                    <option value="3D Scatter Plot">3D Scatter Plot</option>
+                    <option value="3D Surface Plot">3D Surface Plot</option>
+                </select>
+            </div>
+
+            <!-- Inputs for Axes -->
+            <div class="mb-3">
+                <label for="x_axis" class="form-label">X-Axis Column:</label>
+                <input type="text" id="x_axis" name="x_axis" class="form-control" placeholder="Enter column name for X-axis">
+            </div>
+            <div class="mb-3">
+                <label for="y_axis" class="form-label">Y-Axis Column:</label>
+                <input type="text" id="y_axis" name="y_axis" class="form-control" placeholder="Enter column name for Y-axis">
+            </div>
+
+            <!-- Button to Submit -->
+            <button type="submit" class="btn btn-primary w-100">Generate Plot</button>
+        </form>
+
+        <!-- Loader Animation -->
+        <div class="loader-container" id="loaderContainer">
+            <div class="loader"></div>
+        </div>
+
+        <!-- Display Results -->
+        <div class="mt-5">
+            {% if plot_html %}
+                <h2>Generated Plot:</h2>
+                <div>{{ plot_html|safe }}</div>
+            {% elif df %}
+                <h2>Generated Data Table:</h2>
+                <div>{{ df|safe }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Show loader when form is submitted
+        const form = document.getElementById("plotForm");
+        const loaderContainer = document.getElementById("loaderContainer");
+
+        // Function to dynamically update the plot types
+        document.getElementById('question').addEventListener('input', function () {
+            const query = this.value.toLowerCase();
+            const plotTypeDropdown = document.getElementById('plot_type');
+
+            // Example logic to change plot types based on query
+            if (query.includes('trend')) {
+                plotTypeDropdown.value = 'Line Chart'; // Set to Line Chart by default for trend
+            } else if (query.includes('distribution')) {
+                plotTypeDropdown.value = 'Histogram'; // Default to Histogram for distribution queries
+            } else if (query.includes('comparison')) {
+                plotTypeDropdown.value = 'Bar Chart'; // Set to Bar Chart for comparison
+            } else {
+                plotTypeDropdown.value = '1D'; // Default option
+            }
+        });
+
+        form.addEventListener("submit", function() {
+            loaderContainer.classList.add("show");
+        });
+    </script>
+</body>
+</html>
