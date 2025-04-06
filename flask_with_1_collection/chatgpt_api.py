@@ -7,7 +7,7 @@ from langchain.prompts import PromptTemplate
 
 # Set your OpenAI API key
 os.environ[
-    "OPENAI_API_KEY"] = "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"
+    "OPENAI_API_KEY"] = "Your api key"
 
 # MongoDB details
 db_host = "localhost"
